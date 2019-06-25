@@ -1,0 +1,98 @@
+	using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ExamLTOSqlll
+{
+    class Program
+    {
+        public static linktosqldataDataContext ctx;
+ 
+        static void Main(string[] args)
+        {
+            //addproduct();
+
+            displayall();
+
+            /*//Delete
+            Console.WriteLine("Enter id to be deleted");
+            int did = Convert.ToInt32(Console.ReadLine());
+            delete(did);
+            */
+
+            //updateproduct
+            Console.WriteLine("Enter id to be updated");
+            int uid = Convert.ToInt32(Console.ReadLine());
+            update(uid);
+        }
+
+        public static void addproduct()
+        {
+            ctx = new linktosqldataDataContext();
+
+            Console.WriteLine("Enter product id");
+            int pid = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Enter product Product Name");
+            string pname = Console.ReadLine();
+
+            Product prod = new Product();
+            prod.pid = pid;
+            prod.pname = pname;
+
+            ctx.Products.InsertOnSubmit(prod);
+            ctx.SubmitChanges();
+            Console.WriteLine("Record Added...!!!");
+        }
+
+        public static void displayall()
+        {
+            ctx = new linktosqldataDataContext();
+
+            var query = from data in ctx.Products
+                        select data;
+
+            foreach(var q in query)
+            {
+                Console.WriteLine("Pid:" +q.pid+ "Name:" +q.pname);
+            }
+        }
+
+        public static void delete(int id)
+        {
+            ctx = new linktosqldataDataContext();
+
+            var query = from data in ctx.Products
+                        where data.pid == id
+                        select data;
+
+            foreach (var q in query)
+                ctx.Products.DeleteOnSubmit(q).dele
+
+            ctx.SubmitChanges();
+            Console.WriteLine("Record deleted...!!!");
+        }
+
+        public static void update(int id)
+        {
+            ctx = new linktosqldataDataContext();
+
+            Console.WriteLine("Enter the name of product");
+            string pname = Console.ReadLine();
+
+            var query = from data in ctx.Products
+                        where data.pid == id
+                        select data;
+
+            foreach(var q in query)
+            {
+                q.pname = pname;
+            }
+
+            ctx.SubmitChanges();
+            Console.WriteLine("Record Updated...!!!");
+        }
+    }
+}
