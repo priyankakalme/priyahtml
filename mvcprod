@@ -1,0 +1,117 @@
+using Morningmvccodefirst.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Morningmvccodefirst.Controllers
+{
+    [Authorize]
+    public class StudentController : Controller
+    {
+        StudentContext ctx = new StudentContext();
+
+        // GET: Student
+        public ActionResult Index()
+        {
+            var std = ctx.stud.ToList(); 
+            return View(std);
+        }
+
+        // GET: Student/Details/5
+        public ActionResult Details(int id)
+        {
+            Student s = ctx.stud.SingleOrDefault(s1 => s1.stdid == id);
+                if(s == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return View(s);
+        }
+
+        // GET: Student/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Student/Create
+        [HttpPost]
+        public ActionResult Create(Student s)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ctx.stud.Add(s);
+                    ctx.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                return View(s);
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Student/Edit/5
+        public ActionResult Edit(int id)
+        {
+            Student s = ctx.stud.SingleOrDefault(s1 => s1.stdid == id);
+            if (s == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return View(s);
+        }
+
+        // POST: Student/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, Student ss)
+        {
+            try
+            {
+                ctx.Entry(ss).State = System.Data.Entity.EntityState.Modified;
+                ctx.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Student/Delete/5
+        public ActionResult Delete(int id)
+        {
+            Student s = ctx.stud.SingleOrDefault(s2 => s2.stdid == id);
+            if (s == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return View(s);
+        }
+
+        // POST: Student/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, Student s1)
+        {
+            try
+            {
+                Student s = ctx.stud.SingleOrDefault(s3=> s3.stdid == id);
+                ctx.stud.Remove(s);
+                ctx.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
+}
